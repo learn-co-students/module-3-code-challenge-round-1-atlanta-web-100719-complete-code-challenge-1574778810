@@ -24,6 +24,25 @@ document.addEventListener('DOMContentLoaded', () => {
     let imgLikes = document.querySelector('#likes')
     imgLikes.innerHTML = data.like_count
 
+    const likeBtn = document.querySelector('#like_button')
+
+    likeBtn.addEventListener('click', (event) => {
+
+      fetch(likeURL, {
+        method: 'POST',
+        headers: {'Accept': 'application/json', 'Content-Type': 'application/json'},
+        body: JSON.stringify({ image_id: imageId })
+      })
+      .then(res => res.json())
+      .then(likes => {likes.like_count += 1})
+      
+    })
+
+    
+
+
+
+
     const imgCommentsUl = document.querySelector('#comments')
     
     function listComments(){
@@ -36,8 +55,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   listComments()
 
-    const form = document.querySelector('#comment_form')
-    form.addEventListener('submit', (event) => {
+    const commentsForm = document.querySelector('#comment_form')
+    commentsForm.addEventListener('submit', (event) => {
       event.preventDefault()
 
        fetch(commentsURL, {
@@ -53,8 +72,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-    const likesButton = document.querySelector('#like_button')
-    console.log(likesButton)
+
+
+
+    
 
 
 
@@ -67,4 +88,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-// imgCommentsUl.appendChild(li)
