@@ -30,10 +30,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
     ul = document.querySelector('#comments');
     for (const comment of photo.comments) {
-      console.log(comment)
       li = document.createElement('li');
       li.innerText = comment.content
       ul.appendChild(li);
     }
   }
+
+  button = document.querySelector('#like_button');
+  button.addEventListener('click', addLike);
+
+  function addLike(event) {
+    const span = document.querySelector('#likes');
+    numLikes = Number.parseInt(span.innerText)
+    span.innerText = ++numLikes;
+
+    updateLikes();
+  }
+
+  function updateLikes() {
+    fetch(likeURL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        image_id: imageId
+      })
+    })
+  }
+
+
 })
