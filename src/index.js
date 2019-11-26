@@ -25,25 +25,30 @@ document.addEventListener('DOMContentLoaded', () => {
     imgLikes.innerHTML = data.like_count
 
     const imgCommentsUl = document.querySelector('#comments')
-    let li = document.createElement('li')
-
+    
+    function listComments(){
     for (let i = 0; i < data.comments.length; i++){
-      
+
+      let li = document.createElement('li')
       li.innerText = data.comments[i].content
       imgCommentsUl.appendChild(li)
     }
+  }
+  listComments()
 
     const form = document.querySelector('#comment_form')
     form.addEventListener('submit', (event) => {
-      event.preventDefault
+      event.preventDefault()
 
-      const postComment = fetch(commentsURL, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ comment: event.target.comment.value })
+       fetch(commentsURL, {
+        method: 'POST', headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+        body: JSON.stringify({ image_id: imageId, content: event.target.comment.value })
 
       })
       .then(res => res.json())
+      .then(comment => { listComments(comment) })
 
+      event.target.reset()
     })
 
 
