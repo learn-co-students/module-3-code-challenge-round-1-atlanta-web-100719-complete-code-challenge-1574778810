@@ -28,18 +28,34 @@ document.addEventListener('DOMContentLoaded', () => {
     span = document.querySelector('#likes');
     span.innerText = photo.like_count;
 
-    ul = document.querySelector('#comments');
+
     for (const comment of photo.comments) {
-      // li = document.createElement('li');
-      // li.innerText = comment.content
-      // ul.appendChild(li);
-      appendComment(comment.content, ul)
+      appendComment(comment)
     }
   }
 
-  function appendComment(comment, ul) {
+  function appendComment(comment) {
+    ul = document.querySelector('#comments');
+
     li = document.createElement('li');
-    li.innerText = comment
+    li.innerText = comment.content + '    '
+
+    button = document.createElement('button');
+    button.innerText = "x"
+
+    button.addEventListener('click', (event) => {
+      fetch(commentsURL + comment.id, {
+        method: 'DELETE'
+      })
+        .then(res => res.json())
+        .then(result => {
+          console.info(result.message)
+          event.target.parentNode.remove()
+        })
+    })
+
+    li.appendChild(button);
+
     ul.appendChild(li);
   }
 
@@ -72,7 +88,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function addComment(event) {
     event.preventDefault();
-    appendComment(event.target.comment.value, ul)
     createComment(event.target.comment.value);
     event.target.reset();
   }
@@ -89,6 +104,11 @@ document.addEventListener('DOMContentLoaded', () => {
         content: comment
       })
     })
+      .then(res => res.json())
+      .then(result => {
+        if (!result.errors)
+          appendComment(result)
+      })
   }
 
 })
