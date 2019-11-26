@@ -30,10 +30,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     ul = document.querySelector('#comments');
     for (const comment of photo.comments) {
-      li = document.createElement('li');
-      li.innerText = comment.content
-      ul.appendChild(li);
+      // li = document.createElement('li');
+      // li.innerText = comment.content
+      // ul.appendChild(li);
+      appendComment(comment.content, ul)
     }
+  }
+
+  function appendComment(comment, ul) {
+    li = document.createElement('li');
+    li.innerText = comment
+    ul.appendChild(li);
   }
 
   button = document.querySelector('#like_button');
@@ -60,5 +67,13 @@ document.addEventListener('DOMContentLoaded', () => {
     })
   }
 
+  form = document.querySelector('#comment_form');
+  form.addEventListener('submit', addComment);
+
+  function addComment(event) {
+    event.preventDefault();
+    appendComment(event.target.comment.value, ul)
+    event.target.reset();
+  }
 
 })
