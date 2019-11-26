@@ -73,7 +73,22 @@ document.addEventListener('DOMContentLoaded', () => {
   function addComment(event) {
     event.preventDefault();
     appendComment(event.target.comment.value, ul)
+    createComment(event.target.comment.value);
     event.target.reset();
+  }
+
+  function createComment(comment) {
+    fetch(commentsURL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        image_id: imageId,
+        content: comment
+      })
+    })
   }
 
 })
