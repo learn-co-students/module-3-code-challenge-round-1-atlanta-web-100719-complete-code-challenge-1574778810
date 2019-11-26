@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       })
       .then(res => res.json())
-      .then(comment => { listComments(comment) })
+      .then(comment => {  })
 
       event.target.reset()
     })
